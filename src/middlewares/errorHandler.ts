@@ -1,7 +1,7 @@
 import { ErrorRequestHandler } from "express";
 import { CustomError } from "../lib/errors";
 
-export const handleErrors: ErrorRequestHandler = (error, _req, res, _next) => {
+export const handleErrors: ErrorRequestHandler = (error, _req, res) => {
   console.error(error);
 
   const statusCode = error instanceof CustomError ? error.statusCode : 500;

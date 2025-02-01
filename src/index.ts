@@ -26,6 +26,8 @@ app.all("*", (req, res) => {
 // Error Handling Middleware
 app.use(handleErrors);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is listening at PORT ${PORT}`);
 });
+
+export default server;
