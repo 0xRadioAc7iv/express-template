@@ -8,6 +8,7 @@ import { limiter } from "./middlewares/rateLimiter";
 import { loggingMiddleware } from "./middlewares/logger";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./utils/swagger";
+import redisClient from "./utils/redis";
 
 const app = express();
 
@@ -32,8 +33,20 @@ app.all("*", (req, res) => {
 // Error Handling Middleware
 app.use(handleErrors);
 
-const server = app.listen(3000, "0.0.0.0", () => {
-  console.log("Server is listening at PORT 3000");
-});
+const serverPromise = (async () => {
+  try {
+    await redisClient.connect();
+    console.log("Connected to Redis");
+  } catch (error) {
+    console.error("Error connecting to Redis:", error);
+    process.exit(1);
+  }
 
-export default server;
+  const server = app.listen(3000, () => {
+    console.log("Server is listening at PORT 3000");
+  });
+
+  return server;
+})();
+
+export default serverPromise;

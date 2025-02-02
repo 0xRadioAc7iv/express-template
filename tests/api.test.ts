@@ -1,5 +1,12 @@
+import { Server } from "http";
 import request from "supertest";
-import server from "../src/index";
+import serverPromise from "../src/index";
+
+let server: Server;
+
+beforeAll(async () => {
+  server = await serverPromise;
+});
 
 afterAll((done) => {
   server.close(done);
