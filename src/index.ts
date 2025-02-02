@@ -1,3 +1,4 @@
+import path from "path";
 import express, { urlencoded } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -11,6 +12,10 @@ import { swaggerSpec } from "./utils/swagger";
 import redisClient from "./utils/redis";
 
 const app = express();
+
+// Set View Engine
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./src/views"));
 
 // Middlewares
 app.use(helmet());
