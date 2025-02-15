@@ -1,23 +1,42 @@
-# Use an official Node runtime as a parent image
-FROM node:18-alpine
+# Use the official Node.js 18 Alpine image as the base image for the build stage
+FROM node:18-alpine AS builder
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json to install dependencies
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies using npm ci (ensures clean install)
+RUN npm ci
 
-# Copy the rest of the application code
+# Copy the rest of the application files to the container
 COPY . .
 
-# Expose the port the app runs on
-EXPOSE 3000
+# Build the application (typically compiles TypeScript, transpiles, etc.)
+RUN npm run build
 
-# Define environment variable
+
+# Use the official Node.js 18 Alpine image as the base image for the production stage
+FROM node:18-alpine AS production
+
+# Set the working directory inside the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json from the builder stage (for consistency)
+COPY --from=builder /usr/src/app/package*.json ./
+
+# Copy node_modules from the builder stage to avoid reinstalling dependencies
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+
+# Copy the built application (dist folder) from the builder stage
+COPY --from=builder /usr/src/app/dist ./dist
+
+# Set the environment variable to production
 ENV NODE_ENV=production
 
-# Start the app
-CMD ["npm", "start"]
+# Expose port 3000 for the application
+EXPOSE 3000
+
+# Start the application
+CMD ["node", "dist/index.js"]
