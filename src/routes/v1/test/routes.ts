@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { sendGreetingsController } from "../../../controllers/testControllers";
-import { getIndexPage } from "../../../controllers/views";
+import { Router } from 'express';
+import { sendGreetingsController } from '../../../controllers/testControllers';
+import { getIndexPage } from '../../../controllers/views';
 
 const testRouter = Router();
 
@@ -22,7 +22,7 @@ const testRouter = Router();
  *                   type: string
  *                   example: "Hi"
  */
-testRouter.get("/", sendGreetingsController);
+testRouter.get('/', sendGreetingsController);
 
 /**
  * @swagger
@@ -46,6 +46,6 @@ testRouter.get("/", sendGreetingsController);
  *       500:
  *         description: Internal server error
  */
-testRouter.get("/view", getIndexPage);
+testRouter.get('/view', getIndexPage);
 
 export { testRouter };

@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { RequestHandler } from 'express';
 
 /**
  * Controller to send a greeting message.
@@ -8,7 +8,7 @@ import { RequestHandler } from "express";
  * @returns {void} Sends a JSON response with a greeting message
  */
 const sendGreetingsController: RequestHandler = (request, response) => {
-  response.status(200).send({ message: "Hi" });
+    response.status(200).send({ message: 'Hi' });
 };
 
 export { sendGreetingsController };

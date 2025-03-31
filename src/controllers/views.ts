@@ -1,7 +1,7 @@
-import { RequestHandler } from "express";
+import { RequestHandler } from 'express';
 
 const getIndexPage: RequestHandler = (request, response) => {
-  response.render("index");
+    response.render('index');
 };
 
 export { getIndexPage };
